@@ -33,12 +33,14 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser, isStaffEditorPermission]
 
 class ProductUpdateAPIView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [permissions.DjangoModelPermissions]
     lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser, isStaffEditorPermission]
 
     def perform_update(self, serializer):
         instance = serializer.save()
@@ -49,6 +51,7 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser, isStaffEditorPermission]
 
     def perform_destroy(self, instance):
         super().perform_destroy(instance)
@@ -56,6 +59,7 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAdminUser, isStaffEditorPermission]
 
 
 # 
