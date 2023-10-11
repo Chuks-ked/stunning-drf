@@ -5,14 +5,16 @@ from django.shortcuts import get_object_or_404
 # from django.http import Http404
 
 from .models import Product
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import StaffEditorPermissionMixin, UserQuerySetMixins
 from .serializers import ProductSerializer
 
 class ProductListCreateAPIView(
+    UserQuerySetMixins,
     StaffEditorPermissionMixin,
     generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    
     
 
     def perform_create(self, serializer):
@@ -24,11 +26,18 @@ class ProductListCreateAPIView(
         None
         if content is None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
 
-    
+    # def get_queryset(self,*args, **kwargs):
+    #     qs = super().get_queryset(*args, **kwargs)
+    #     request = self.request
+    #     user = request.user
+    #     if not user.is_authenticated:
+    #         return Product.objects.none()
+    #     return qs.filter(user=request.user)
 
 class ProductDetailAPIView(
+    UserQuerySetMixins,
     StaffEditorPermissionMixin,
     generics.RetrieveAPIView):
     queryset = Product.objects.all()
@@ -36,6 +45,7 @@ class ProductDetailAPIView(
     # lookup_field = 'pk'
 
 class ProductUpdateAPIView(
+    UserQuerySetMixins,
     StaffEditorPermissionMixin,
     generics.UpdateAPIView):
     queryset = Product.objects.all()
@@ -48,6 +58,7 @@ class ProductUpdateAPIView(
             instance.content = instance.title
 
 class ProductDeleteAPIView(
+    UserQuerySetMixins,
     StaffEditorPermissionMixin,
     generics.DestroyAPIView):
     queryset = Product.objects.all()
@@ -58,6 +69,7 @@ class ProductDeleteAPIView(
         super().perform_destroy(instance)
 
 class ProductListAPIView(
+    UserQuerySetMixins,
     StaffEditorPermissionMixin,
     generics.ListAPIView):
     queryset = Product.objects.all()
