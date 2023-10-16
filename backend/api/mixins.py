@@ -7,7 +7,7 @@ class StaffEditorPermissionMixin():
 class UserQuerySetMixins():
     user_field = 'user'
     allow_staff_view = False
-    
+
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
         lookup_data = {}
@@ -16,3 +16,4 @@ class UserQuerySetMixins():
         if self.allow_staff_view and user.is_staff:
             return qs
         return qs.filter(**lookup_data)
+    
