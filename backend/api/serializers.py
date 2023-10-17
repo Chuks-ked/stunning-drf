@@ -20,4 +20,3 @@ class UserPublicUserSerializer(serializers.Serializer):
     #      user = obj
     #      my_products_qs = user.product_set.all()[:5]
     #      return UserProductInlineSerializer(my_products_qs, many=True, context=self.context).data
-    

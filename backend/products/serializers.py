@@ -14,7 +14,6 @@ class ProductInlineSerializer(serializers.Serializer):
      )
      title = serializers.CharField(read_only=True)
 
-
 class ProductSerializer(serializers.ModelSerializer):
     owner = UserPublicUserSerializer(source='user', 
     read_only=True)
