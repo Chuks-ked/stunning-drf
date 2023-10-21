@@ -37,6 +37,9 @@ class Product(models.Model):
 
     objects = ProductManager()
 
+    def is_public(self):
+        return self.public
+
     def __str__(self):
         return self.title
     
